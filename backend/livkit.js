@@ -6,21 +6,24 @@ const dotenv=require('dotenv');
 dotenv.config();
 
 app.use(cors(
-{origin:'http://localhost:3000'}
+{origin:[
+  "https://talk-bridge-mm5r6j7al-kumar-ayushs-projects-8c0afea8.vercel.app",
+  "http://localhost:3000"
+]}
 ));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
-// const roomName = 'room1';
-let count=1;
-
 
 
 
 app.get("/api/getToken",(req,res)=>{
-    count++;
     const participantName = req.query.participantName;
     const roomId=req.query.roomName;
+    if (!participantName || !roomId) {
+        return res.status(400).send("Missing participantName or roomName");
+    }
     console.log(participantName,roomId);
+    try{
     const at = new AccessToken(process.env.LIVEKIT_API_KEY, process.env.LIVEKIT_API_SECRET, {
         identity: participantName,
     });
@@ -31,12 +34,18 @@ app.get("/api/getToken",(req,res)=>{
     console.log('access token', token);
     return res.send(token);
     }
+    }
+    catch(error){
+        console.error(error);
+    return res.status(500).send("Internal Server Error");
+    }
     genToken();
     
 })
 
 
 
-app.listen(5005,()=>{
-    console.log("Server Running...");
+const PORT = process.env.PORT || 5005;
+app.listen(PORT, () => {
+  console.log(`Server Running on port ${PORT}...`);
 });
