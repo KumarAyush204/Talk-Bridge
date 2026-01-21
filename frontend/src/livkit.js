@@ -17,7 +17,7 @@ function VideoApp() {
   async function fetchToken(participantName, roomName) {
     try {
       const response = await axios.get(
-      "https://5702da1d1145.ngrok-free.app/api/getToken",
+      "https://talkbridge-backend.vercel.app/api/getToken",
       {
         params: {
           participantName,
