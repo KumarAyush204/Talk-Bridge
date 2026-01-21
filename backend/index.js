@@ -61,7 +61,7 @@ dotenv.config();
 const app = express();
 
 const allowedOrigins = [
-  "https://talk-bridge-mm5r6j7al-kumar-ayushs-projects-8c0afea8.vercel.app",
+  "https://talk-bridge-hvdhbxt86-kumar-ayushs-projects-8c0afea8.vercel.app",
   "http://localhost:5173",
   "http://localhost:3000"
 ];
@@ -110,8 +110,6 @@ app.get("/api/getToken", async (req, res) => {
   }
 });
 
-// Vercel Serverless Config
-// Only listen on port if running locally (not in Vercel)
 if (process.env.NODE_ENV !== 'production') {
     const PORT = process.env.PORT || 5005;
     app.listen(PORT, () => {
@@ -119,5 +117,4 @@ if (process.env.NODE_ENV !== 'production') {
     });
 }
 
-// Crucial for Vercel: Export the app
 module.exports = app;
