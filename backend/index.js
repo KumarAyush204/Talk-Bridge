@@ -60,20 +60,30 @@ dotenv.config();
 
 const app = express();
 
-const allowedOrigins = [
-  "https://talk-bridge-hvdhbxt86-kumar-ayushs-projects-8c0afea8.vercel.app",
-  "http://localhost:5173",
-  "http://localhost:3000"
-];
-
+// const allowedOrigins = [
+//   "https://talk-bridge-hvdhbxt86-kumar-ayushs-projects-8c0afea8.vercel.app",
+//   "http://localhost:5173",
+//   "http://localhost:3000"
+// ];
+const allowVercel = /\.vercel\.app$/;
 app.use(cors({
   origin: function (origin, callback) {
+    // 1. Allow mobile apps or non-browser requests
     if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-      return callback(new Error(msg), false);
+    
+    // 2. Allow requests from Localhost (your computer)
+    if (origin.includes("localhost")) {
+        return callback(null, true);
     }
-    return callback(null, true);
+
+    // 3. Allow requests from ANY Vercel app (Frontend)
+    if (allowVercel.test(origin)) {
+        return callback(null, true);
+    }
+
+    // 4. Block anything else
+    const msg = 'Blocked by CORS policy';
+    return callback(new Error(msg), false);
   },
   methods: ["GET", "POST", "OPTIONS"],
   credentials: true

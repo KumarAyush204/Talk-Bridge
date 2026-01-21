@@ -17,14 +17,11 @@ function VideoApp() {
   async function fetchToken(participantName, roomName) {
     try {
       const response = await axios.get(
-      "https://talk-bridge-elyo-z258yk4kv-kumar-ayushs-projects-8c0afea8.vercel.app/api/getToken",
+      "https://talk-bridge-elyo.vercel.app/api/getToken",
       {
         params: {
           participantName,
           roomName,
-        },
-        headers: {
-          "ngrok-skip-browser-warning": "true",
         },
       }
     );
