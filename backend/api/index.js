@@ -68,20 +68,13 @@ const app = express();
 const allowVercel = /\.vercel\.app$/;
 app.use(cors({
   origin: function (origin, callback) {
-    // 1. Allow mobile apps or non-browser requests
     if (!origin) return callback(null, true);
-    
-    // 2. Allow requests from Localhost (your computer)
     if (origin.includes("localhost")) {
         return callback(null, true);
     }
-
-    // 3. Allow requests from ANY Vercel app (Frontend)
     if (allowVercel.test(origin)) {
         return callback(null, true);
     }
-
-    // 4. Block anything else
     const msg = 'Blocked by CORS policy';
     return callback(new Error(msg), false);
   },
